@@ -1,0 +1,17 @@
+{
+  "name": "custom-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/fileA.mjs",
+    "start:deps": "node src/circle_deps_example/app.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "node compiler/index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esprima": "^4.0.1"
+  }
+}
