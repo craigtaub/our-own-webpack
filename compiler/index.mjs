@@ -1,29 +1,16 @@
-import path from "path";
 import fs from "fs";
-import exprima from "esprima"; // tokenize
+import { deps_graph } from "./deps_graph.mjs";
+import { transform } from "./transform.mjs";
 
-const main = () => {
-  const depsArray = [];
-  const entry = "./src/fileA.mjs";
-  const fullPath = path.resolve(entry);
-  // console.log("full path", fullPath);
+// 1. Travers deps graph
+const entry = "./src/fileA.mjs";
+const depsArray = deps_graph(entry, true);
+// console.log(depsArray);
 
-  // check exists
-  const exists = !!depsArray.find(item => item.name === fullPath);
-  if (exists) {
-    return;
-  }
+// 2. Transform to bundle
+const vendorString = transform(depsArray);
 
-  // create module
-  const module = {
-    name: fullPath
-  };
+// 3. Write to bundle
+fs.writeFileSync("./build/bundle.js", vendorString, "utf8");
 
-  // process file
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  console.log(fileContents);
-  const parsed = exprima.parseScript(fileContents);
-  console.log(parsed);
-};
-
-main();
+console.log("FINISHED :)");
