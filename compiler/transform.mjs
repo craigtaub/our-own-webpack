@@ -26,7 +26,7 @@ const bootstrap_string = `
        loaded: false // need this?
     }
     // Execute module function
-    modules[moduleId].call(
+    modules[moduleId].call({},
         module,  
         _our_require_
     );
