@@ -10,7 +10,8 @@ const depsArray = deps_graph(entry, true);
 // 2. Transform to bundle
 const vendorString = transform(depsArray);
 
-// 3. Write to bundle
+// 3. Write to bundle + manifest
 fs.writeFileSync("./build/bundle.js", vendorString, "utf8");
+// TODO: manifest + use on server.
 
 console.log("FINISHED :)");

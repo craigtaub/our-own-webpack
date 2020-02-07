@@ -40,7 +40,7 @@ const bootstrap_string = `
   _our_require_.m = modules;
 
   // Load entry module n return exports
-  return _our_require_(0); // get right id
+  return _our_require_(0); // entry id
 
 })
 /* Dep tree */
