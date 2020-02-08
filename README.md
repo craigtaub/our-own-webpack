@@ -31,9 +31,9 @@ Bundlers can be complicated, so to understand here's one in 200 lines.
 
 ### How this compiler works (and most other bundlers):
 
-1. Builds dependency graph from entry file, inside `compiler/deps_graph.mjs`
-2. Converts tree into a bundle, inside `compiler/transform.mjs`.
-3. Server file reads the resulting manifest for details of vendor hash and serves to browser.
+1. Builds dependency graph from entry file - see `compiler/deps_graph.mjs`
+2. Converts tree into a bundle, stores hash of contents - see `compiler/transform.mjs`.
+3. Server file reads the resulting manifest for details of bundle hash and serves to browser - see `server.mjs`
 
 #### Additional
 
