@@ -19,7 +19,8 @@ Bundlers can be complicated, so to understand here's one in 200 lines.
 - Dependency graphs
 - Recursive functions
 - ESM
-- AST parsing
+- AST code parsing
+- AST code generation
 - Hashing
 - Pass by ref
 
