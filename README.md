@@ -1,4 +1,4 @@
-# Our own version of Webpack
+# Our own version of Webpack in <200 lines
 
 Bundlers can be complicated, so to understand here's one in 200 lines.
 
