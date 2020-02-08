@@ -1,6 +1,5 @@
 import path from "path";
 import fs from "fs";
-// https://github.com/buxlabs/abstract-syntax-tree
 import ast from "abstract-syntax-tree";
 
 const depsArray = [];
@@ -49,13 +48,3 @@ const deps_graph = (file, firstRun = false) => {
 };
 
 export { deps_graph };
-
-/* Esprima issue
-
-  // No issues
-  const program = "const answer = 42";
-  // Breaks
-  const program = 'import { returnTime } from "./fileB.mjs";';
-  
-  esprima.parse(program);
-*/

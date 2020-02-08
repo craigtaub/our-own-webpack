@@ -49,10 +49,12 @@ const bootstrap_string = `
 ]); 
 `;
 
-// Replacing ESM import/export with our functions
-// const program = 'const returnTime = _ourRequire("{ID}");';
-// const program = "module.exports = someFunction;";
-// console.log("PROGRAM:", ast.parse(program).body[0]);
+/* Replacing ESM import with our functions.
+ * Use below code snippet to confirm structure
+
+  `const program = 'const returnTime = _ourRequire("{ID}");';`
+  `console.log("Import AST:", ast.parse(program).body[0]);`
+*/
 const get_import = (item, allDeps) => {
   // get function we import
   const importFunctionName = item.specifiers[0].imported.name;
@@ -89,6 +91,13 @@ const get_import = (item, allDeps) => {
     ]
   };
 };
+
+/* Replacing ESM export with our function.
+ * Use below code snippet to confirm structure
+
+  `const program = "module.exports = someFunction;";`
+  `console.log("Import AST:", ast.parse(program).body[0]);`
+*/
 const get_export = item => {
   // get export functions name
   const moduleName = item.specifiers[0].exported.name;
@@ -107,7 +116,6 @@ const get_export = item => {
     }
   };
 };
-// console.log("generate test:", ast.generate(our_export));
 
 const transform = depsArray => {
   const modulesString = [];
@@ -128,8 +136,6 @@ const transform = depsArray => {
 
     // Turn AST back into string
     const updatedSource = ast.generate(dependency.source);
-    // console.log("=========>" + dependency.name + "<======\n");
-    // console.log(updatedSource);
 
     // Bind module source to module template
     const updatedTemplate = module_template_string.replace(
@@ -148,6 +154,3 @@ const transform = depsArray => {
   return vendorString;
 };
 export { transform };
-
-// regenrate AST
-// console.log(ast.generate(source));
