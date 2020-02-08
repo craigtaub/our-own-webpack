@@ -4,17 +4,17 @@ import path from "path";
 /*
  * Template to be used for each module.
  */
-const module_template_string = `
+const buildModuleTemplateString = moduleCode => `
 (function(module, _ourRequire) {
   "use strict";
-  {{module_code}}
+  ${moduleCode}
 })
 `;
 
 /*
  * Our main template containing the bundles runtime.
  */
-const bootstrap_template_string = `
+const buildRuntimeTemplateString = allModules => `
 (function(modules) {
   // Bootstrap. Define runtime.
   installedModules = {}
@@ -46,7 +46,7 @@ const bootstrap_template_string = `
 })
 /* Dep tree */
 ([
- {{all_modules}}
+ ${allModules}
 ]); 
 `;
 
@@ -142,18 +142,12 @@ const transform = depsArray => {
     const updatedSource = ast.generate(dependency.source);
 
     // Bind module source to module template
-    const updatedTemplate = module_template_string.replace(
-      "{{module_code}}",
-      updatedSource
-    );
+    const updatedTemplate = buildModuleTemplateString(updatedSource);
     modulesString.push(updatedTemplate);
   });
 
   // Add all modules to bundle
-  const bundleString = bootstrap_template_string.replace(
-    "{{all_modules}}",
-    modulesString.join(",")
-  );
+  const bundleString = buildRuntimeTemplateString(modulesString.join(","));
 
   return bundleString;
 };
