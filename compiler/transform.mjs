@@ -56,7 +56,7 @@ const bootstrap_template_string = `
  *`const program = 'const returnTime = _ourRequire("{ID}");';`
  *`console.log("Import AST:", ast.parse(program).body[0]);`
  */
-const get_import = (item, allDeps) => {
+const getImport = (item, allDeps) => {
   // get function we import
   const importFunctionName = item.specifiers[0].imported.name;
   // get files full path and find index in deps array.
@@ -99,7 +99,7 @@ const get_import = (item, allDeps) => {
  *`const program = "module.exports = someFunction;";`
  *`console.log("Import AST:", ast.parse(program).body[0]);`
  */
-const get_export = item => {
+const getExport = item => {
   // get export functions name
   const moduleName = item.specifiers[0].exported.name;
   return {
@@ -128,11 +128,11 @@ const transform = depsArray => {
     const updatedAst = dependency.source.body.map(item => {
       if (item.type === "ImportDeclaration") {
         // replace module import with ours
-        item = get_import(item, depsArray);
+        item = getImport(item, depsArray);
       }
       if (item.type === "ExportNamedDeclaration") {
         // replaces function name with real exported function
-        item = get_export(item);
+        item = getExport(item);
       }
       return item;
     });

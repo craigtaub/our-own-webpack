@@ -4,7 +4,7 @@ import ast from "abstract-syntax-tree";
 
 const depsArray = [];
 
-const deps_graph = (file, firstRun = false) => {
+const depsGraph = (file, firstRun = false) => {
   // TODO: locally doesnt add /src/ so needs it. relates to CWD.
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
@@ -41,10 +41,10 @@ const deps_graph = (file, firstRun = false) => {
   // Process module for each dep.
   module.deps.map(file => {
     // Recursively call
-    deps_graph(file);
+    depsGraph(file);
   });
 
   return depsArray;
 };
 
-export { deps_graph };
+export { depsGraph };

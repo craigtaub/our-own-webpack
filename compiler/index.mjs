@@ -1,11 +1,11 @@
 import fs from "fs";
 import crypto from "crypto";
-import { deps_graph } from "./deps_graph.mjs";
+import { depsGraph } from "./deps_graph.mjs";
 import { transform } from "./transform.mjs";
 
 // 1. Travers deps graph
 const entry = "./src/fileA.mjs";
-const depsArray = deps_graph(entry, true);
+const depsArray = depsGraph(entry, true);
 
 // 2. Transform to bundle
 const vendorString = transform(depsArray);
