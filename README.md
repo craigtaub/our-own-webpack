@@ -18,6 +18,7 @@ Bundlers can be complicated, so to understand here's one in 200 lines.
 - IIFE
 - Dependency graphs
 - Recursive functions
+- Defining our own import/export system
 - ESM
 - AST code parsing
 - AST code generation
