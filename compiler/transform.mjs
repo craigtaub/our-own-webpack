@@ -1,6 +1,9 @@
 import ast from "abstract-syntax-tree";
 import path from "path";
 
+/*
+ * Template to be used for each module.
+ */
 const module_template_string = `
 (function(module, _ourRequire) {
   "use strict";
@@ -8,39 +11,37 @@ const module_template_string = `
 })
 `;
 
-const bootstrap_string = `
+/*
+ * Our main template containing the bundles runtime.
+ */
+const bootstrap_template_string = `
 (function(modules) {
   // Bootstrap. Define runtime.
   installedModules = {}
   function _our_require_(moduleId) {
     // Module in cache?
     if (installedModules[moduleId]) {
+        // return function exported in module
        return installedModules[moduleId].exports
-       // Return what's assigned in funct
     }
 
     // Get module
     module = {
        i: moduleId,
        exports: {},
-       loaded: false // need this?
     }
     // Execute module function
     modules[moduleId].call({},
         module,  
         _our_require_
     );
-    module.loaded = true; 
 
     // Return exports of module
     return module.exports;
   }
 
-  // Expose modules object
-  _our_require_.m = modules;
-
-  // Load entry module n return exports
-  return _our_require_(0); // entry id
+  // Load entry module via id + return exports
+  return _our_require_(0);
 
 })
 /* Dep tree */
@@ -51,10 +52,10 @@ const bootstrap_string = `
 
 /* Replacing ESM import with our functions.
  * Use below code snippet to confirm structure
-
-  `const program = 'const returnTime = _ourRequire("{ID}");';`
-  `console.log("Import AST:", ast.parse(program).body[0]);`
-*/
+ *
+ *`const program = 'const returnTime = _ourRequire("{ID}");';`
+ *`console.log("Import AST:", ast.parse(program).body[0]);`
+ */
 const get_import = (item, allDeps) => {
   // get function we import
   const importFunctionName = item.specifiers[0].imported.name;
@@ -94,10 +95,10 @@ const get_import = (item, allDeps) => {
 
 /* Replacing ESM export with our function.
  * Use below code snippet to confirm structure
-
-  `const program = "module.exports = someFunction;";`
-  `console.log("Import AST:", ast.parse(program).body[0]);`
-*/
+ *
+ *`const program = "module.exports = someFunction;";`
+ *`console.log("Import AST:", ast.parse(program).body[0]);`
+ */
 const get_export = item => {
   // get export functions name
   const moduleName = item.specifiers[0].exported.name;
@@ -117,6 +118,9 @@ const get_export = item => {
   };
 };
 
+/*
+ * Take depsArray and return bundle string
+ */
 const transform = depsArray => {
   const modulesString = [];
 
@@ -146,11 +150,11 @@ const transform = depsArray => {
   });
 
   // Add all modules to bundle
-  const vendorString = bootstrap_string.replace(
+  const bundleString = bootstrap_template_string.replace(
     "{{all_modules}}",
     modulesString.join(",")
   );
 
-  return vendorString;
+  return bundleString;
 };
 export { transform };
