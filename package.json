@@ -8,8 +8,7 @@
     "clean": "rm build/*",
     "compile": "node compiler/index.mjs",
     "start:server": "node --experimental-json-modules server.mjs",
-    "start:client": "node src/fileA.mjs",
-    "start:deps": "node src/circle_deps_example/app.mjs"
+    "start:client": "node src/fileA.mjs"
   },
   "author": "",
   "license": "ISC",
