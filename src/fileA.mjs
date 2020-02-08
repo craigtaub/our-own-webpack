@@ -7,4 +7,3 @@ const main = () => {
 };
 
 main();
-// const craigTime = _ourRequire("{ID}");

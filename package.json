@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/fileA.mjs",
-    "start:deps": "node src/circle_deps_example/app.mjs",
-    "compile": "node compiler/index.mjs"
+    "start": "npm run clean && npm run compile && npm run start:server",
+    "clean": "rm build/*",
+    "compile": "node compiler/index.mjs",
+    "start:server": "node --experimental-json-modules server.mjs",
+    "start:client": "node src/fileA.mjs",
+    "start:deps": "node src/circle_deps_example/app.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "abstract-syntax-tree": "^2.5.0",
-    "esprima": "^4.0.1"
+    "esprima": "^4.0.1",
+    "express": "^4.17.1"
   }
 }
