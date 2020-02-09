@@ -22,6 +22,7 @@ Bundlers can be complicated, so to understand here's one in 200 lines.
 - ESM
 - AST code parsing
 - AST code generation
+- Defining lifecycle events
 - Hashing
 - Pass by ref
 
@@ -41,6 +42,12 @@ Bundlers can be complicated, so to understand here's one in 200 lines.
 
 - We use ESM so it handles cyclic dependencies better than CJS (it does this due to its compile-time statis analysis feature).
 - For simplicity we don't include non-js assets (e.g. images/css) or separate bundles (e.g. app/vendors).
+
+## Lifecycle events
+
+We use the nodejs EventEmitter to create lifecycle events which can be plugged into to add functionality.
+
+Each lifecycle event can be extended to pass data into a listener.
 
 ## Note about Webpack
 

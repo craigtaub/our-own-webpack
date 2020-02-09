@@ -1,5 +1,6 @@
 import ast from "abstract-syntax-tree";
 import path from "path";
+import { eventEmitter } from "./lifecycle.mjs";
 
 /*
  * Template to be used for each module.
@@ -124,6 +125,7 @@ const getExport = item => {
 const transform = depsArray => {
   const modulesString = [];
 
+  eventEmitter.emit("transform_deps", depsArray.length);
   depsArray.map(dependency => {
     const updatedAst = dependency.source.body.map(item => {
       if (item.type === "ImportDeclaration") {
@@ -149,6 +151,7 @@ const transform = depsArray => {
   // Add all modules to bundle
   const bundleString = buildRuntimeTemplateString(modulesString.join(","));
 
+  eventEmitter.emit("return_bundle_string");
   return bundleString;
 };
 export { transform };

@@ -2,6 +2,9 @@ import fs from "fs";
 import crypto from "crypto";
 import { depsGraph } from "./deps_graph.mjs";
 import { transform } from "./transform.mjs";
+import { eventEmitter } from "./lifecycle.mjs";
+
+eventEmitter.emit("start");
 
 // 1. Travers deps graph
 const entry = "./src/fileA.mjs";
@@ -24,4 +27,4 @@ fs.writeFileSync(
   "utf8"
 );
 
-console.log("FINISHED :)");
+eventEmitter.emit("end");

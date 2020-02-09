@@ -1,10 +1,13 @@
 import path from "path";
 import fs from "fs";
 import ast from "abstract-syntax-tree";
+import { eventEmitter } from "./lifecycle.mjs";
 
 const depsArray = [];
 
 const depsGraph = (file, firstRun = false) => {
+  eventEmitter.emit("build_graph");
+
   // TODO: locally doesnt add /src/ so needs it. relates to CWD.
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
@@ -44,6 +47,7 @@ const depsGraph = (file, firstRun = false) => {
     depsGraph(file);
   });
 
+  eventEmitter.emit("returned_graph");
   return depsArray;
 };
 
