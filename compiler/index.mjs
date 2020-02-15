@@ -3,8 +3,8 @@ import crypto from "crypto";
 import { depsGraph } from "./deps_graph.mjs";
 import { transform } from "./transform.mjs";
 
-// 1. Travers deps graph
-const entry = "./src/fileA.mjs";
+// 1. Traverse deps graph
+const entry = "./src/fileA.mjs"; // move to config or cli
 const depsArray = depsGraph(entry, true);
 
 // 2. Transform to bundle

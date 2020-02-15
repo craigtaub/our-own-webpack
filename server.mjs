@@ -14,8 +14,6 @@ const html_string = `
 
 app.use("/static", express.static("build"));
 
-app.get("/", (req, res) => {
-  res.send(html_string);
-});
+app.get("/", (req, res) => res.send(html_string));
 
 app.listen(8000, () => console.log("App listening on port 3000!"));

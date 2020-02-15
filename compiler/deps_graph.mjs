@@ -8,14 +8,11 @@ const depsGraph = (file, firstRun = false) => {
   // TODO: locally doesnt add /src/ so needs it. relates to CWD.
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
-  // check exists
+  // return early if exists
   const exists = !!depsArray.find(item => item.name === fullPath);
-  if (exists) {
-    // early exit. Important for recursion.
-    return;
-  }
+  if (exists) return;
 
-  // create module
+  // create "module"
   const module = {
     name: fullPath
   };
@@ -36,7 +33,6 @@ const depsGraph = (file, firstRun = false) => {
 
   // Add module to deps array
   depsArray.push(module);
-  // console.log(module);
 
   // Process module for each dep.
   module.deps.map(file => {
