@@ -4,16 +4,15 @@ import path from "path";
 /*
  * Template to be used for each module.
  */
-const buildModuleTemplateString = moduleCode => `
+const buildModuleTemplateString = (moduleCode, index) => `
+/* index/id ${index} */
 (function(module, _ourRequire) {
   "use strict";
   ${moduleCode}
 })
 `;
 
-/*
- * Our main template containing the bundles runtime.
- */
+// Our main template containing the bundles runtime.
 const buildRuntimeTemplateString = allModules => `
 (function(modules) {
   // Bootstrap. Define runtime.
@@ -129,7 +128,7 @@ const getExport = item => {
 const transform = depsArray => {
   const modulesString = [];
 
-  depsArray.map(dependency => {
+  depsArray.forEach((dependency, index) => {
     const updatedAst = dependency.source.body.map(item => {
       if (item.type === "ImportDeclaration") {
         // replace module import with ours
@@ -147,7 +146,7 @@ const transform = depsArray => {
     const updatedSource = ast.generate(dependency.source);
 
     // Bind module source to module template
-    const updatedTemplate = buildModuleTemplateString(updatedSource);
+    const updatedTemplate = buildModuleTemplateString(updatedSource, index);
     modulesString.push(updatedTemplate);
   });
 
