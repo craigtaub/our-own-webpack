@@ -128,7 +128,7 @@ const getExport = item => {
 const transform = depsArray => {
   const modulesString = [];
 
-  depsArray.forEach((dependency, index) => {
+  depsArray.map((dependency, index) => {
     const updatedAst = dependency.source.body.map(item => {
       if (item.type === "ImportDeclaration") {
         // replace module import with ours
