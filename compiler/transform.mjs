@@ -24,7 +24,7 @@ const buildRuntimeTemplateString = allModules => `
        return installedModules[moduleId].exports
     }
 
-    // Build module
+    // Build module, store exports against this ref.
     const module = {
        i: moduleId,
        exports: {},
