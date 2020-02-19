@@ -17,7 +17,7 @@ const buildModuleTemplateString = moduleCode => `
 const buildRuntimeTemplateString = allModules => `
 (function(modules) {
   // Bootstrap. Define runtime.
-  installedModules = {}
+  const installedModules = {}
   function _our_require_(moduleId) {
     // Module in cache?
     if (installedModules[moduleId]) {
@@ -25,19 +25,24 @@ const buildRuntimeTemplateString = allModules => `
        return installedModules[moduleId].exports
     }
 
-    // Get module
-    module = {
+    // Build module
+    const module = {
        i: moduleId,
        exports: {},
     }
+
     // Execute module function
     modules[moduleId].call({},
         module,  
         _our_require_
     );
 
+    // cache exports of module
+    const exports = module.exports;
+    installedModules[moduleId] = exports
+
     // Return exports of module
-    return module.exports;
+    return exports;
   }
 
   // Load entry module via id + return exports

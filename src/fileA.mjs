@@ -1,9 +1,9 @@
-import { returnTime } from "./fileB.mjs";
-import { logIt } from "./fileC.mjs";
+import { returnDateTime } from "./fileB.mjs";
+import { logDate } from "./fileC.mjs";
 
 const main = () => {
-  const time = returnTime();
-  logIt(time);
+  const date = returnDateTime();
+  logDate(date);
 };
 
 main();

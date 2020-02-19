@@ -1,7 +1,7 @@
 import { logger } from "./fileD.mjs";
 
-const logIt = text => {
-  logger(text);
+const logDate = text => {
+  logger(`The date is: ${text}`);
 };
 
-export { logIt };
+export { logDate };

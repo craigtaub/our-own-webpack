@@ -25,7 +25,8 @@ const depsGraph = (file, firstRun = false) => {
   // create deps
   const deps = source.body.reduce((agg, current) => {
     if (current.type === "ImportDeclaration") {
-      agg.push(current.source.value);
+      // store dep full path
+      agg.push(path.resolve(current.source.value.replace("./", "./src/")));
     }
     return agg;
   }, []);

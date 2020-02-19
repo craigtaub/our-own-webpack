@@ -1,5 +1,5 @@
-const returnTime = () => {
+const returnDateTime = () => {
   return new Date().toDateString();
 };
 
-export { returnTime };
+export { returnDateTime };
