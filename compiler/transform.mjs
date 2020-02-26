@@ -56,14 +56,13 @@ const buildRuntimeTemplateString = (allModules, indexLocation) => `
 ]); 
 `;
 
-/* Replacing ESM import with our functions.
- * Use below code snippet to confirm structure
- *
- *`const program = 'const returnTime = _ourRequire("{ID}");';`
+/*
+ * Replacing ESM import with our function.
+ *`const someImport = _ourRequire("{ID}");`
  *`console.log("Import AST:", ast.parse(program).body[0]);`
  */
 const getImport = (item, allDeps) => {
-  // get function we import
+  // get variable we import onto
   const importFunctionName = item.specifiers[0].imported.name;
   // get files full path and find index in deps array.
   const fileImported = item.source.value;
@@ -99,11 +98,10 @@ const getImport = (item, allDeps) => {
   };
 };
 
-/* Replacing ESM export with our function.
- * Use below code snippet to confirm structure
- *
- *`const program = "module.exports = someFunction;";`
- *`console.log("Import AST:", ast.parse(program).body[0]);`
+/*
+ * Replacing ESM export with our function.
+ * Use below code snippet to confirm structure:
+ * `module.exports = someFunction;`
  */
 const getExport = item => {
   // get export functions name
