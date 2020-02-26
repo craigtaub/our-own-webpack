@@ -13,7 +13,7 @@ const buildModuleTemplateString = (moduleCode, index) => `
 `;
 
 // Our main template containing the bundles runtime.
-const buildRuntimeTemplateString = allModules => `
+const buildRuntimeTemplateString = (allModules, indexLocation) => `
 (function(modules) {
   // Bootstrap. Define runtime.
   const installedModules = {}
@@ -45,7 +45,7 @@ const buildRuntimeTemplateString = allModules => `
   }
 
   // Load entry module via id + return exports
-  return _our_require_(0);
+  return _our_require_(${indexLocation});
 
 })
 /* Dep tree */
@@ -151,7 +151,10 @@ const transform = depsArray => {
   });
 
   // Add all modules to bundle
-  const bundleString = buildRuntimeTemplateString(modulesString.join(","));
+  const bundleString = buildRuntimeTemplateString(
+    modulesString.join(","),
+    depsArray.length - 1 // index location
+  );
 
   return bundleString;
 };

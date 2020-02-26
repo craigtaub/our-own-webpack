@@ -9,37 +9,30 @@ const depsGraph = (file, firstRun = false) => {
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
   // return early if exists
-  const exists = !!depsArray.find(item => item.name === fullPath);
-  if (exists) return;
+  if (!!depsArray.find(item => item.name === fullPath)) return;
 
   // create "module"
-  const module = {
-    name: fullPath
-  };
+  const module = { name: fullPath };
 
   // parse file source
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const source = ast.parse(fileContents);
   module.source = source;
 
-  // create deps
-  const deps = source.body.reduce((agg, current) => {
+  // process deps
+  source.body.reduce((agg, current) => {
     if (current.type === "ImportDeclaration") {
+      const file = path.resolve(current.source.value.replace("./", "./src/"));
       // store dep full path
-      agg.push(path.resolve(current.source.value.replace("./", "./src/")));
+      agg.push(file);
+      // process module for each dep.
+      depsGraph(file);
     }
     return agg;
   }, []);
-  module.deps = deps;
 
   // Add module to deps array
   depsArray.push(module);
-
-  // Process module for each dep.
-  module.deps.map(file => {
-    // Recursively call
-    depsGraph(file);
-  });
 
   return depsArray;
 };
