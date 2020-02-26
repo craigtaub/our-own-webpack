@@ -22,9 +22,8 @@ const depsGraph = (file, firstRun = false) => {
   // process deps
   source.body.map(current => {
     if (current.type === "ImportDeclaration") {
-      const file = path.resolve(current.source.value.replace("./", "./src/"));
       // process module for each dep.
-      depsGraph(file);
+      depsGraph(path.resolve(current.source.value.replace("./", "./src/")));
     }
   });
 
