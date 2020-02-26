@@ -3,6 +3,8 @@ import path from "path";
 
 /*
  * Template to be used for each module.
+ * module: load exports onto
+ * _ourRequire: import system
  */
 const buildModuleTemplateString = (moduleCode, index) => `
 /* index/id ${index} */
@@ -15,8 +17,8 @@ const buildModuleTemplateString = (moduleCode, index) => `
 // Our main template containing the bundles runtime.
 const buildRuntimeTemplateString = (allModules, indexLocation) => `
 (function(modules) {
-  // Bootstrap. Define runtime.
-  const installedModules = {}
+  // Define runtime.
+  const installedModules = {}; // id/index + exports
   function _our_require_(moduleId) {
     // Module in cache?
     if (installedModules[moduleId]) {
@@ -30,7 +32,7 @@ const buildRuntimeTemplateString = (allModules, indexLocation) => `
        exports: {},
     }
 
-    // Execute module function
+    // Execute module template function. Add exports to ref.
     modules[moduleId].call({},
         module,  
         _our_require_
@@ -126,12 +128,10 @@ const getExport = item => {
  * Take depsArray and return bundle string
  */
 const transform = depsArray => {
-  const modulesString = [];
-
-  depsArray.map((dependency, index) => {
+  const updatedModules = depsArray.reduce((acc, dependency, index) => {
     const updatedAst = dependency.source.body.map(item => {
       if (item.type === "ImportDeclaration") {
-        // replace module import with ours
+        // replace module imports with ours
         item = getImport(item, depsArray);
       }
       if (item.type === "ExportNamedDeclaration") {
@@ -147,12 +147,13 @@ const transform = depsArray => {
 
     // Bind module source to module template
     const updatedTemplate = buildModuleTemplateString(updatedSource, index);
-    modulesString.push(updatedTemplate);
-  });
+    acc.push(updatedTemplate);
+    return acc;
+  }, []);
 
   // Add all modules to bundle
   const bundleString = buildRuntimeTemplateString(
-    modulesString.join(","),
+    updatedModules.join(","),
     depsArray.length - 1 // index location
   );
 

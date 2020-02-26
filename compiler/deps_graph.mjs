@@ -4,7 +4,7 @@ import ast from "abstract-syntax-tree";
 
 const depsArray = [];
 
-const depsGraph = file, firstRun = false => {
+const depsGraph = (file, firstRun = false) => {
   // TODO: locally doesnt add /src/ so needs it. relates to CWD.
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
