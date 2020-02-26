@@ -11,7 +11,7 @@ const depsGraph = (file, firstRun = false) => {
   // return early if exists
   if (!!depsArray.find(item => item.name === fullPath)) return;
 
-  // create "module"
+  // store path + source as module
   const module = { name: fullPath };
 
   // parse file source
@@ -20,16 +20,13 @@ const depsGraph = (file, firstRun = false) => {
   module.source = source;
 
   // process deps
-  source.body.reduce((agg, current) => {
+  source.body.map(current => {
     if (current.type === "ImportDeclaration") {
       const file = path.resolve(current.source.value.replace("./", "./src/"));
-      // store dep full path
-      agg.push(file);
       // process module for each dep.
       depsGraph(file);
     }
-    return agg;
-  }, []);
+  });
 
   // Add module to deps array
   depsArray.push(module);
