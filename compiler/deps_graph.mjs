@@ -9,26 +9,26 @@ const depsGraph = (file, firstRun = false) => {
   const fullPath = path.resolve(firstRun ? file : file.replace("./", "./src/"));
 
   // return early if exists
-  if (!!depsArray.find(item => item.name === fullPath)) return;
+  if (!!depsArray.find((item) => item.name === fullPath)) return;
 
   // store path + parsed source as module
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const source = ast.parse(fileContents);
   const module = {
     name: fullPath,
-    source
+    source,
   };
 
+  // Add module to deps array
+  depsArray.push(module);
+
   // process deps
-  source.body.map(current => {
+  source.body.map((current) => {
     if (current.type === "ImportDeclaration") {
       // process module for each dep.
       depsGraph(current.source.value);
     }
   });
-
-  // Add module to deps array
-  depsArray.push(module);
 
   return depsArray;
 };

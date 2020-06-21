@@ -68,7 +68,7 @@ const getImport = (item, allDeps) => {
   const fileImported = item.source.value;
   // TODO: locally doesnt add /src/ so needs it. relates to CWD.
   const fullFile = path.resolve(fileImported.replace("./", "./src/"));
-  const itemId = allDeps.findIndex(item => item.name === fullFile);
+  const itemId = allDeps.findIndex((item) => item.name === fullFile);
 
   return {
     type: "VariableDeclaration",
@@ -80,21 +80,21 @@ const getImport = (item, allDeps) => {
           type: "CallExpression",
           callee: {
             type: "Identifier",
-            name: "_ourRequire"
+            name: "_ourRequire",
           },
           arguments: [
             {
               type: "Literal",
-              value: itemId
-            }
-          ]
+              value: itemId,
+            },
+          ],
         },
         id: {
           type: "Identifier",
-          name: importFunctionName
-        }
-      }
-    ]
+          name: importFunctionName,
+        },
+      },
+    ],
   };
 };
 
@@ -103,7 +103,7 @@ const getImport = (item, allDeps) => {
  * Use below code snippet to confirm structure:
  * `module.exports = someFunction;`
  */
-const getExport = item => {
+const getExport = (item) => {
   // get export functions name
   const moduleName = item.specifiers[0].exported.name;
   return {
@@ -114,20 +114,20 @@ const getExport = item => {
         type: "MemberExpression",
         object: { type: "Identifier", name: "module" },
         computed: false,
-        property: { type: "Identifier", name: "exports" }
+        property: { type: "Identifier", name: "exports" },
       },
       operator: "=",
-      right: { type: "Identifier", name: moduleName }
-    }
+      right: { type: "Identifier", name: moduleName },
+    },
   };
 };
 
 /*
  * Take depsArray and return bundle string
  */
-const transform = depsArray => {
+const transform = (depsArray) => {
   const updatedModules = depsArray.reduce((acc, dependency, index) => {
-    const updatedAst = dependency.source.body.map(item => {
+    const updatedAst = dependency.source.body.map((item) => {
       if (item.type === "ImportDeclaration") {
         // replace module imports with ours
         item = getImport(item, depsArray);
@@ -150,10 +150,7 @@ const transform = depsArray => {
   }, []);
 
   // Add all modules to bundle
-  const bundleString = buildRuntimeTemplateString(
-    updatedModules.join(","),
-    depsArray.length - 1 // index location
-  );
+  const bundleString = buildRuntimeTemplateString(updatedModules.join(","), 0);
 
   return bundleString;
 };
