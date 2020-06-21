@@ -15,7 +15,7 @@ const buildModuleTemplateString = (moduleCode, index) => `
 `;
 
 // Our main template containing the bundles runtime.
-const buildRuntimeTemplateString = (allModules, indexLocation) => `
+const buildRuntimeTemplateString = (allModules) => `
 (function(modules) {
   // Define runtime.
   const installedModules = {}; // id/index + exports
@@ -47,7 +47,7 @@ const buildRuntimeTemplateString = (allModules, indexLocation) => `
   }
 
   // Load entry module via id + return exports
-  return _our_require_(${indexLocation});
+  return _our_require_(0);
 
 })
 /* Dep tree */
@@ -59,7 +59,6 @@ const buildRuntimeTemplateString = (allModules, indexLocation) => `
 /*
  * Replacing ESM import with our function.
  *`const someImport = _ourRequire("{ID}");`
- *`console.log("Import AST:", ast.parse(program).body[0]);`
  */
 const getImport = (item, allDeps) => {
   // get variable we import onto
@@ -100,7 +99,6 @@ const getImport = (item, allDeps) => {
 
 /*
  * Replacing ESM export with our function.
- * Use below code snippet to confirm structure:
  * `module.exports = someFunction;`
  */
 const getExport = (item) => {
@@ -150,7 +148,7 @@ const transform = (depsArray) => {
   }, []);
 
   // Add all modules to bundle
-  const bundleString = buildRuntimeTemplateString(updatedModules.join(","), 0);
+  const bundleString = buildRuntimeTemplateString(updatedModules.join(","));
 
   return bundleString;
 };
