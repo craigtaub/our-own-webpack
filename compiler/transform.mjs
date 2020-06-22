@@ -33,10 +33,7 @@ const buildRuntimeTemplateString = (allModules) => `
     }
 
     // Execute module template function. Add exports to ref.
-    modules[moduleId].call({},
-        module,  
-        _our_require_
-    );
+    modules[moduleId](module, _our_require_);
 
     // cache exports of module
     const exports = module.exports;
