@@ -61,9 +61,7 @@ const getImport = (item, allDeps) => {
   // get variable we import onto
   const importFunctionName = item.specifiers[0].imported.name;
   // get files full path and find index in deps array.
-  const fileImported = item.source.value;
-  // TODO: locally doesnt add /src/ so needs it. relates to CWD.
-  const fullFile = path.resolve(fileImported.replace("./", "./src/"));
+  const fullFile = path.resolve("./src/", item.source.value);
   const itemId = allDeps.findIndex((item) => item.name === fullFile);
 
   return {

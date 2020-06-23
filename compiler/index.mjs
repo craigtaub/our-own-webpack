@@ -4,8 +4,8 @@ import { depsGraph } from "./deps_graph.mjs";
 import { transform } from "./transform.mjs";
 
 // 1. Traverse deps graph
-const entry = "./src/fileA.mjs"; // move to config or cli
-const depsArray = depsGraph(entry, true);
+const entry = "./fileA.mjs"; // move to config or cli
+const depsArray = depsGraph(entry);
 
 // 2. Transform to bundle
 const vendorString = transform(depsArray);
